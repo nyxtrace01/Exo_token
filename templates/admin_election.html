@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}— Admin Élections{% endblock %}
+
+{% block content %}
+
+<!--  Table Election -->
+<div class="card">
+  <div class="card-title"><span class="section-num"></span> Créer une élection</div>
+  <form method="POST" action="/admin/election" style="display:flex;gap:14px;align-items:flex-end">
+    <div class="form-group" style="flex:1;margin:0">
+      <label>Titre de l'élection</label>
+      <input type="text" name="titre" placeholder="Ex: Élection présidentielle 2025..." required>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">📋 Liste des élections</div>
+  {% if elections %}
+  <table>
+    <thead>
+      <tr><th>#</th><th>Titre</th><th>Candidats</th></tr>
+    </thead>
+    <tbody>
+      {% for e in elections %}
+      <tr>
+        <td>{{ e.id }}</td>
+        <td><strong>{{ e.titre }}</strong></td>
+        <td><span class="badge badge-blue">{{ e.candidats|length }} candidat(s)</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info">Aucune élection créée.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

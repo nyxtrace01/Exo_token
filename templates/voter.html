@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}— Voter{% endblock %}
+
+{% block content %}
+<div style="max-width:620px;margin:0 auto">
+  <div class="card">
+    <div class="card-title">🗳 Voter</div>
+
+    {% if electeur.has_voted %}
+      <!-- Exercice 13.1 + 13.5 : déjà voté -->
+      <div class="alert alert-warning">
+        ⚠️ <strong>E</strong> — Vous avez déjà voté.
+        Un électeur ne peut voter qu'<strong>une seule fois</strong>
+        (champ <code>has_voted = True</code>).
+      </div>
+      <a href="/resultats" class="btn btn-outline">📊 Voir les résultats</a>
+
+    {% else %}
+      <p style="color:#718096;margin-bottom:22px">
+        Bonjour <strong>{{ electeur.nom }}</strong> — sélectionnez votre candidat.
+        Votre vote est <strong>définitif</strong>.
+      </p>
+
+      {% if candidats %}
+        <form method="POST" action="/voter">
+          {% for c in candidats %}
+          <label class="candidat-option">
+            <input type="radio" name="candidat_id" value="{{ c.id }}" required>
+            <div>
+              <div class="c-nom">{{ c.nom }}</div>
+              <!--  candidat lié à une élection -->
+              {% if c.election %}
+                <div class="c-election">🗳 Élection : {{ c.election.titre }}</div>
+              {% endif %}
+            </div>
+          </label>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-success btn-full" style="margin-top:8px">
+            ✅ Confirmer mon vote
+          </button>
+        </form>
+      {% else %}
+        <div class="alert alert-info">Aucun candidat disponible. <a href="/admin/candidat">Ajouter →</a></div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

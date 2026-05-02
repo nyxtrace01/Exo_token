@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}— Admin Candidats{% endblock %}
+
+{% block content %}
+
+<!-- Exercice 13.3 : Associer candidat à une élection -->
+<div class="card">
+  <div class="card-title"><span class="section-num"></span> Ajouter un candidat</div>
+  <form method="POST" action="/admin/candidat" style="display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap">
+    <div class="form-group" style="flex:1;min-width:180px;margin:0">
+      <label>Nom du candidat</label>
+      <input type="text" name="nom" placeholder="Ex: Alice..." required>
+    </div>
+    <div class="form-group" style="flex:1;min-width:200px;margin:0">
+      <label>Élection associée </label>
+      <select name="election_id">
+        <option value="">— Aucune —</option>
+        {% for e in elections %}
+          <option value="{{ e.id }}">{{ e.titre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+  </form>
+</div>
+
+<!--  Votes par candidat -->
+<div class="card">
+  <div class="card-title"><span class="section-num">13.4</span> Liste des candidats & votes</div>
+  {% if data %}
+  <table>
+    <thead>
+      <tr><th>#</th><th>Candidat</th><th>Élection</th><th>Votes (13.4)</th></tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+      <tr>
+        <td>{{ d.candidat.id }}</td>
+        <td><strong>{{ d.candidat.nom }}</strong></td>
+        <td>
+          {% if d.candidat.election %}
+            <span class="badge badge-blue">{{ d.candidat.election.titre }}</span>
+          {% else %}<span class="badge badge-gray">—</span>{% endif %}
+        </td>
+        <td><span class="badge badge-green">{{ d.votes }} vote(s)</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info">Aucun candidat enregistré.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

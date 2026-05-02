@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}— Accueil{% endblock %}
+
+{% block content %}
+
+<!-- Point 11 : Interface simple — liste des candidats -->
+<div class="card">
+  <div class="card-title"><span class="section-num">11</span> Liste des candidats</div>
+
+  {% if candidats %}
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Candidat</th>
+        <th>Élection</th>
+        <th>Votes actuels</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in resultats %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td><strong>{{ r.candidat.nom }}</strong></td>
+        <td>
+          {% if r.candidat.election %}
+            <span class="badge badge-blue">{{ r.candidat.election.titre }}</span>
+          {% else %}
+            <span class="badge badge-gray">—</span>
+          {% endif %}
+        </td>
+        <td><span class="badge badge-green">{{ r.votes }} vote(s)</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info">Aucun candidat enregistré. <a href="/admin/candidat">Ajouter un candidat →</a></div>
+  {% endif %}
+</div>
+
+<!-- Point 11 : formulaire de vote simplifié (sans connexion) -->
+<div class="card">
+  <div class="card-title"><span class="section-num">11</span> Voter rapidement</div>
+  <div class="info-box">
+    💡 Pour voter, <a href="/connexion" style="color:#2c5282;font-weight:700">connectez-vous</a>
+    ou <a href="/inscription" style="color:#2c5282;font-weight:700">créez un compte</a>.
+    Votre vote est enregistré de façon sécurisée.
+  </div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <a href="/voter" class="btn btn-primary">🗳 Accéder au vote</a>
+    <a href="/resultats" class="btn btn-outline">📊 Voir les résultats</a>
+  </div>
+</div>
+
+{% endblock %}
